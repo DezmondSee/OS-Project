@@ -1,28 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Check-In - GPS App</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Check-in</title>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="js/app.js" defer></script>
 </head>
-<body onload="loadCheckin()">
-<header><h2>Check-In</h2></header>
+<body onload="getLocation()">
 
-<main>
-    <form id="checkin-form">
-        <label for="note">Location Note:</label><br/>
-        <input type="text" id="note" name="note" required><br/><br/>
-        <button type="submit">Submit</button>
-    </form>
-    <p id="status"></p>
-</main>
+<div class="container">
+    <h2>Check-in</h2>
+    <div id="location">Getting your location...</div>
+    <div id="map"></div>
+    <button id="checkin-btn">Check In</button>
+    <div id="checkin-result"></div>
+</div>
 
-<nav class="bottom-nav">
-    <a href="homePage.html">🏠 Home</a>
-    <a href="profile.html">👤 Profile</a>
-    <a href="checkin.html">📍 Check-In</a>
-</nav>
+<div class="navbar">
+    <a href="homePage.html">Home</a>
+    <a href="profile.html">Profile</a>
+    <a href="checkin.html">Check-in</a>
+    <a href="#" id="logout-link">Logout</a>
+</div>
 
-<script src="script.js"></script>
+<script>
+    document.getElementById('checkin-btn').addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation not supported');
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Simulate saving check-in data - replace with real backend API call
+            const time = new Date().toLocaleString();
+
+            const result = document.getElementById('checkin-result');
+            result.innerHTML = `<p class="success">Checked in at ${time} (Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)})</p>`;
+        }, () => {
+            alert('Unable to get location for check-in.');
+        });
+    });
+</script>
+
 </body>
 </html>

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Home - GPS Check-In</title>
+    <title>Home</title>
     <link rel="stylesheet" href="css/styles.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="js/app.js" defer></script>
 </head>
-<body>
+<body onload="getLocation()">
+
 <div class="container">
-    <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
-    <p>Your current location:</p>
-    <p id="location">Fetching location...</p>
+    <h2>Welcome, [username]</h2>
+    <div id="location">Getting your location...</div>
+    <div id="map"></div>
 </div>
 
-<!-- Bottom Panel -->
-<div class="bottom-panel">
-    <button onclick="navigateTo('home.html')" class="nav-btn active">Home</button>
-    <button onclick="navigateTo('profile.html')" class="nav-btn">Profile</button>
-    <button onclick="navigateTo('location.html')" class="nav-btn">Check-In</button>
-    <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+<div class="navbar">
+    <a href="homePage.html">Home</a>
+    <a href="profile.html">Profile</a>
+    <a href="checkin.html">Check-in</a>
+    <a href="#" id="logout-link">Logout</a>
 </div>
 
-<script src="js/script.js"></script>
 </body>
 </html>

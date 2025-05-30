@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Check-In</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <script>
-        function sendLocation() {
-            navigator.geolocation.getCurrentPosition((position) => {
-                document.getElementById("latitude").value = position.coords.latitude;
-                document.getElementById("longitude").value = position.coords.longitude;
-            });
-        }
-    </script>
+    <title>Register</title>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script src="js/app.js" defer></script>
 </head>
-<body onload="sendLocation()">
+<body>
+
 <div class="container">
-    <h2>Check-in</h2>
-    <form method="post" action="http://your-server/php/checkin.php">
-        <input type="text" id="latitude" name="latitude" readonly />
-        <input type="text" id="longitude" name="longitude" readonly />
-        <input type="hidden" name="username" value="[username]" />
-        <button type="submit">Submit Check-in</button>
+    <h2>Register</h2>
+    <form id="register-form" onsubmit="registerUser(event)">
+        <input type="text" id="reg-username" placeholder="Username" required />
+        <input type="password" id="reg-password" placeholder="Password" required />
+        <input type="password" id="reg-password2" placeholder="Confirm Password" required />
+        <label for="reg-security-question">Security Question:</label>
+        <select id="reg-security-question" required>
+            <option value="">Select a question</option>
+            <option value="pet">What is your pet's name?</option>
+            <option value="mother">What is your mother's maiden name?</option>
+            <option value="school">What was your first school?</option>
+        </select>
+        <input type="text" id="reg-security-answer" placeholder="Answer" required />
+        <label for="reg-birthdate">Birthdate:</label>
+        <input type="date" id="reg-birthdate" required />
+        <button type="submit">Register</button>
     </form>
+    <p><a href="login.html">Back to Login</a></p>
 </div>
-<div class="navbar">
-    <a href="homePage.html">Home</a>
-    <a href="profile.html">Profile</a>
-    <a href="checkin.html.html">Check-in</a>
-</div>
+
 </body>
 </html>
