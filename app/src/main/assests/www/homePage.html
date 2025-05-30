@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home - GPS Check-In</title>
+    <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<div class="container">
+    <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
+    <p>Your current location:</p>
+    <p id="location">Fetching location...</p>
+</div>
+
+<!-- Bottom Panel -->
+<div class="bottom-panel">
+    <button onclick="navigateTo('home.html')" class="nav-btn active">Home</button>
+    <button onclick="navigateTo('profile.html')" class="nav-btn">Profile</button>
+    <button onclick="navigateTo('location.html')" class="nav-btn">Check-In</button>
+    <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check-In</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+        function sendLocation() {
+            navigator.geolocation.getCurrentPosition((position) => {
+                document.getElementById("latitude").value = position.coords.latitude;
+                document.getElementById("longitude").value = position.coords.longitude;
+            });
+        }
+    </script>
+</head>
+<body onload="sendLocation()">
+<div class="container">
+    <h2>Check-in</h2>
+    <form method="post" action="http://your-server/php/checkin.php">
+        <input type="text" id="latitude" name="latitude" readonly />
+        <input type="text" id="longitude" name="longitude" readonly />
+        <input type="hidden" name="username" value="[username]" />
+        <button type="submit">Submit Check-in</button>
+    </form>
+</div>
+<div class="navbar">
+    <a href="homePage.html">Home</a>
+    <a href="profile.html">Profile</a>
+    <a href="checkin.html.html">Check-in</a>
+</div>
+</body>
+</html>
