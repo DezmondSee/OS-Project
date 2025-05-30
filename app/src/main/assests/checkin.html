@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check-In - GPS App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadCheckin()">
+<header><h2>Check-In</h2></header>
+
+<main>
+    <form id="checkin-form">
+        <label for="note">Location Note:</label><br/>
+        <input type="text" id="note" name="note" required><br/><br/>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="status"></p>
+</main>
+
+<nav class="bottom-nav">
+    <a href="index.html">🏠 Home</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="checkin.html">📍 Check-In</a>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>
