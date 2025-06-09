@@ -1,10 +1,9 @@
-// Navigation handled by <a href> links, except logout handled here
 document.addEventListener('DOMContentLoaded', () => {
     const logoutLink = document.getElementById('logout-link');
     if(logoutLink) {
         logoutLink.addEventListener('click', e => {
             e.preventDefault();
-            // clear session or localStorage here
+            localStorage.clear(); // clear session or localStorage here
             alert('Logged out!');
             window.location.href = 'login.html';
         });
@@ -29,14 +28,20 @@ function showPosition(position) {
     const locationElem = document.getElementById("location");
     locationElem.innerText = `Latitude: ${lat.toFixed(5)}, Longitude: ${lon.toFixed(5)}`;
 
-    // Display map with Leaflet.js
+    // Send to checkin.php
+    const username = localStorage.getItem('username') || '';
+    fetch('php/checkin.php', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `username=${encodeURIComponent(username)}&latitude=${lat}&longitude=${lon}`
+    });
+
+    // Show map using Leaflet.js
     if(window.L && document.getElementById('map')) {
         const map = L.map('map').setView([lat, lon], 13);
-
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
-
         L.marker([lat, lon]).addTo(map).bindPopup("You are here.").openPopup();
     }
 }
@@ -58,7 +63,7 @@ function showError(error) {
     }
 }
 
-// Login form submit example
+// Login form submit
 function loginUser(event) {
     event.preventDefault();
     const username = document.getElementById('username').value.trim();
@@ -69,12 +74,24 @@ function loginUser(event) {
         return;
     }
 
-    // TODO: send login request to backend, for demo just redirect
-    alert(`Logged in as ${username}`);
-    window.location.href = 'homePage.html';
+    fetch('php/login.php', {
+        method: 'POST',
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+    })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                localStorage.setItem("username", username);
+                alert("Logged in successfully");
+                window.location.href = 'homePage.html';
+            } else {
+                alert("Invalid username or password");
+            }
+        });
 }
 
-// Register form submit example
+// Register form submit
 function registerUser(event) {
     event.preventDefault();
     const username = document.getElementById('reg-username').value.trim();
@@ -94,9 +111,20 @@ function registerUser(event) {
         return;
     }
 
-    // TODO: send register request to backend
-    alert(`User ${username} registered!`);
-    window.location.href = 'login.html';
+    fetch('php/register.php', {
+        method: 'POST',
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&security_question=${encodeURIComponent(securityQuestion)}&security_answer=${encodeURIComponent(securityAnswer)}&birthdate=${encodeURIComponent(birthdate)}`
+    })
+        .then(res => res.text())
+        .then(data => {
+            if(data === 'success') {
+                alert(`User ${username} registered!`);
+                window.location.href = 'login.html';
+            } else {
+                alert("Registration failed. " + data);
+            }
+        });
 }
 
 // Forgot password form submit
@@ -111,15 +139,27 @@ function forgotPassword(event) {
         return;
     }
 
-    // TODO: validate question and answer from backend
-    alert('Security question verified. Proceed to change password.');
-    // Redirect to change password page with username passed (can be via query string or storage)
-    window.location.href = `change_password.html?username=${encodeURIComponent(username)}`;
+    fetch('php/forgot_password.php', {
+        method: 'POST',
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `username=${encodeURIComponent(username)}&security_question=${encodeURIComponent(question)}&security_answer=${encodeURIComponent(answer)}`
+    })
+        .then(res => res.text())
+        .then(response => {
+            if(response === 'success') {
+                alert('Security question verified. Proceed to change password.');
+                window.location.href = `change_password.html?username=${encodeURIComponent(username)}`;
+            } else {
+                alert('Security answer is incorrect.');
+            }
+        });
 }
 
 // Change password form submit
 function changePassword(event) {
     event.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('username');
     const password = document.getElementById('cp-password').value;
     const password2 = document.getElementById('cp-password2').value;
 
@@ -132,8 +172,18 @@ function changePassword(event) {
         return;
     }
 
-    // TODO: send password change request to backend
-
-    alert('Password changed successfully!');
-    window.location.href = 'login.html';
+    fetch('php/change_password.php', {
+        method: 'POST',
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `username=${encodeURIComponent(username)}&new_password=${encodeURIComponent(password)}`
+    })
+        .then(res => res.text())
+        .then(response => {
+            if(response === 'success') {
+                alert('Password changed successfully!');
+                window.location.href = 'login.html';
+            } else {
+                alert('Failed to change password.');
+            }
+        });
 }
