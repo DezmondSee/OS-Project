@@ -1,49 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Check-in</title>
-    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <script src="js/app.js" defer></script>
 </head>
-<body onload="getLocation()">
+<body>
 
 <div class="container">
     <h2>Check-in</h2>
     <div id="location">Getting your location...</div>
-    <div id="map"></div>
+    <div id="map" style="height: 300px; margin: 20px 0;"></div>
     <button id="checkin-btn">Check In</button>
     <div id="checkin-result"></div>
 </div>
 
 <div class="navbar">
-    <a href="homePage.html">Home</a>
+    <a href="index.html">Home</a>
     <a href="profile.html">Profile</a>
     <a href="checkin.html">Check-in</a>
     <a href="#" id="logout-link">Logout</a>
 </div>
-
-<script>
-    document.getElementById('checkin-btn').addEventListener('click', () => {
-        if (!navigator.geolocation) {
-            alert('Geolocation not supported');
-            return;
-        }
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            // Simulate saving check-in data - replace with real backend API call
-            const time = new Date().toLocaleString();
-
-            const result = document.getElementById('checkin-result');
-            result.innerHTML = `<p class="success">Checked in at ${time} (Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)})</p>`;
-        }, () => {
-            alert('Unable to get location for check-in.');
-        });
-    });
-</script>
 
 </body>
 </html>
